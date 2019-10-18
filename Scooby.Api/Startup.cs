@@ -6,17 +6,40 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Scooby.Infra.EFCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Scooby.Api
 {
     public class Startup
     {
-        
-        public void ConfigureServices(IServiceCollection services)
+        private IConfiguration _Configuration { get; }
+
+        public Startup(IConfiguration configuration)
         {
+            _Configuration = configuration;
         }
 
-        
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<ScoobyContext>(options =>
+            {
+                options.UseSqlServer(
+                    _Configuration.GetConnectionString("DefaultConnection"),
+                    assembly => assembly.MigrationsAssembly(typeof(Startup).Assembly.FullName));
+
+            });
+
+            services.AddApiVersioning();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+        }
+
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -24,10 +47,7 @@ namespace Scooby.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
+            app.UseMvc();
         }
     }
 }
