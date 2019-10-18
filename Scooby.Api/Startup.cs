@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Scooby.Infra.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Scooby.Infra.Repository;
+using Scooby.Infra.Repository.impl;
 
 namespace Scooby.Api
 {
@@ -33,7 +28,7 @@ namespace Scooby.Api
                     assembly => assembly.MigrationsAssembly(typeof(Startup).Assembly.FullName));
 
             });
-
+            services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddApiVersioning();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

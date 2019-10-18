@@ -14,6 +14,9 @@ namespace Scooby.Infra.EFCore
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new BrandMap());
+            builder.ApplyConfiguration(new FamilyMap());
+            builder.ApplyConfiguration(new CategoryMap());
+            builder.ApplyConfiguration(new ProductMap());
         }
     }
 }

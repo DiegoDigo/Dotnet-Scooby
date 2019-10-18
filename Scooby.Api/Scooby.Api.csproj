@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scooby.Infra\Scooby.Infra.csproj" />
+    <ProjectReference Include="..\Scooby.Domain\Scooby.Domain.csproj" />
+    <ProjectReference Include="..\Scooby.Shared\Scooby.Shared.csproj" />
   </ItemGroup>
 
 </Project>
